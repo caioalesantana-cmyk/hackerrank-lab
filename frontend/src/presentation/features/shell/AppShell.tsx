@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import type { ReactNode } from "react";
+import { useThemeStore, applyThemeToDocument } from "../../../application/stores/themeStore";
+import { AppTopBar } from "./AppTopBar";
 import { Container } from "./Container";
 
 export function AppShell(props: {
@@ -8,20 +10,19 @@ export function AppShell(props: {
   breadcrumb?: ReactNode;
   right?: ReactNode;
   children: ReactNode;
-  theme?: "light" | "dark";
 }) {
-  const theme = props.theme ?? "dark";
+  const theme = useThemeStore((s) => s.theme);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
+    applyThemeToDocument(theme);
   }, [theme]);
 
   return (
     <div className="min-h-dvh text-text0" data-theme={theme}>
+      <AppTopBar />
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-panel focus:bg-surfaceControl focus:px-3 focus:py-2"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-14 focus:z-50 focus:rounded-panel focus:bg-surfaceControl focus:px-3 focus:py-2"
       >
         Skip to content
       </a>
